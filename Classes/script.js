@@ -1,30 +1,30 @@
 "use strict";
 // 1) Fix code js for ts
 function textNormalize(text) {
-  return text.trim().toLowerCase();
+    return text.trim().toLowerCase();
 }
 console.log(textNormalize(" DesigN"));
 // 2) Fix code js for ts
 const input = document.querySelector("input");
 const total = localStorage.getItem("total");
 if (input && total) {
-  input.value = total;
-  calcGain(Number(input.value));
+    input.value = total;
+    calcGain(Number(input.value));
 }
 function calcGain(value) {
-  const p = document.querySelector("p");
-  if (p) {
-    p.innerText = `ganho total: ${value + 100 - value * 0.2}`;
-  }
+    const p = document.querySelector("p");
+    if (p) {
+        p.innerText = `ganho total: ${value + 100 - value * 0.2}`;
+    }
 }
 function totalMudou() {
-  if (input) {
-    localStorage.setItem("total", input.value);
-    calcGain(Number(input.value));
-  }
+    if (input) {
+        localStorage.setItem("total", input.value);
+        calcGain(Number(input.value));
+    }
 }
 if (input) {
-  input.addEventListener("keyup", totalMudou);
+    input.addEventListener("keyup", totalMudou);
 }
 // 1 - Crie uma função chamada toNumber
 // 2 - A função pode receber number | string
@@ -32,19 +32,41 @@ if (input) {
 // 4 - Se a função receber uma string, retorne um número
 // 5 - Se ela receber algo diferente, retorne um erro. (throw "value deve ser um número ou uma string")
 function toNumber(value) {
-  if (typeof value === "number") {
-    return value;
-  } else if (typeof value === "string") {
-    const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
-      return numericValue;
-    } else {
-      throw new Error(
-        "O valor da string não pode ser convertido para um número"
-      );
+    if (typeof value === "number") {
+        return value;
     }
-  } else {
-    throw new Error("value deve ser um número ou uma string");
-  }
+    else if (typeof value === "string") {
+        const numericValue = parseFloat(value);
+        if (!isNaN(numericValue)) {
+            return numericValue;
+        }
+        else {
+            throw new Error("O valor da string não pode ser convertido para um número");
+        }
+    }
+    else {
+        throw new Error("value deve ser um número ou uma string");
+    }
 }
-console.log(toNumber(true));
+console.log(toNumber("100"));
+function showProduct(data) {
+    document.body.innerHTML = `
+    <div>
+      <h2>${data.nome}</h2>
+      <p> ${data.preco}</p>
+      <div>
+        <h3>Fabricante : ${data.empresaFabricante.nome}</h3>
+      </div>
+      <div>
+        <h3>Montadora : ${data.empresaMontadora.nome}</h3>
+      </div>
+    </div>
+  `;
+}
+async function fetchProduct() {
+    const response = await fetch("http://api.origamid.dev/json/notebook.json");
+    const data = await response.json();
+    console.log("Responde fetch products", data);
+    showProduct(data);
+}
+fetchProduct();

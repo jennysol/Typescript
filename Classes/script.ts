@@ -59,3 +59,46 @@ function toNumber(value: number | string): number | string {
 }
 
 console.log(toNumber("100"));
+
+// Consult api with interface
+
+interface Empresa {
+  nome: string;
+  fundacao: number;
+  país: string;
+}
+
+interface Product {
+  nome: string;
+  descricao: string;
+  garantia: string;
+  preco: number;
+  seguroAcidentes: boolean;
+  empresaFabricante: Empresa;
+  empresaMontadora: Empresa;
+}
+
+function showProduct(data: Product) {
+  document.body.innerHTML = `
+    <div>
+      <h2>${data.nome}</h2>
+      <p> ${data.preco}</p>
+      <div>
+        <h3>Fabricante : ${data.empresaFabricante.nome}</h3>
+      </div>
+      <div>
+        <h3>Montadora : ${data.empresaMontadora.nome}</h3>
+      </div>
+    </div>
+  `;
+}
+
+async function fetchProduct() {
+  const response = await fetch("http://api.origamid.dev/json/notebook.json");
+  const data = await response.json();
+  console.log("Responde fetch products", data);
+
+  showProduct(data);
+}
+
+fetchProduct();
